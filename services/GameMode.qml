@@ -11,6 +11,8 @@ Singleton {
     id: root
 
     property alias enabled: props.enabled
+    property string gameModeRefresh: "2560x1600@60"
+    property real gameModeScale: 1.25
 
     function setDynamicConfs(): void {
         Hypr.extras.applyOptions({
@@ -23,13 +25,17 @@ Singleton {
             "decoration:rounding": 0,
             "general:allow_tearing": 1
         });
+        // Limita o compositor a 60Hz; o jogo escolhe o refresh via fullscreen exclusivo
+        Hypr.extras.batchMessage([
+            `eval hl.monitor({ output = "", mode = "${root.gameModeRefresh}", position = "0x0", scale = ${root.gameModeScale} })`
+        ]);
     }
 
     onEnabledChanged: {
         if (enabled) {
             setDynamicConfs();
             if (GlobalConfig.utilities.toasts.gameModeChanged)
-                Toaster.toast(qsTr("Game mode enabled"), qsTr("Disabled Hyprland animations, blur, gaps and shadows"), "gamepad");
+                Toaster.toast(qsTr("Game mode enabled"), qsTr("Animations off · display locked to 60Hz"), "gamepad");
         } else {
             Hypr.extras.message("reload");
             if (GlobalConfig.utilities.toasts.gameModeChanged)
