@@ -9,7 +9,11 @@ import qs.components.containers
 import qs.services
 
 Variants {
-    model: Screens.screens.filter(s => GlobalConfig.forScreen(s.name).background.enabled)
+    // Sem wallpaper/clock/visualiser, não criar surface — evita cobrir engines externos (Waywallen).
+    model: Screens.screens.filter(s => {
+        const bg = GlobalConfig.forScreen(s.name).background;
+        return bg.enabled && (bg.wallpaperEnabled || bg.desktopClock.enabled || bg.visualiser.enabled);
+    })
 
     StyledWindow {
         id: win

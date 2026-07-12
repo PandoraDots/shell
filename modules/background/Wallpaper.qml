@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import Quickshell
 import Caelestia.Config
 import qs.components
 import qs.components.filedialog
@@ -12,7 +13,7 @@ Item {
     id: root
 
     property string source: Wallpapers.current
-    property CachingImage current
+    property Item current
     property bool completed
 
     onSourceChanged: {
@@ -100,13 +101,23 @@ Item {
         }
     }
 
+    // file:// Image: image://ccache (CachingImage) fica invisível/preto em alguns GPUs NVIDIA.
     Component {
         id: imgComp
 
-        CachingImage {
+        Image {
             id: img
 
+            required property string path
+
             anchors.fill: parent
+            asynchronous: true
+            fillMode: Image.PreserveAspectCrop
+            source: path ? (path.startsWith("file:") ? path : `file://${path}`) : ""
+            sourceSize: {
+                const dpr = (QsWindow.window as QsWindow)?.devicePixelRatio ?? 1;
+                return Qt.size(width * dpr, height * dpr);
+            }
 
             opacity: 0
 
