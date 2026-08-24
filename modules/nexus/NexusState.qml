@@ -17,6 +17,7 @@ QtObject {
     property string selectedNetworkSsid
     property string selectedEthernetInterface
     property bool networkDetailsFromSaved
+    property string selectedMonitorName
 
     signal close
     signal subPageOpened(idx: int)

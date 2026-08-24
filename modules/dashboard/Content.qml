@@ -30,6 +30,12 @@ Item {
                 enabled: Config.dashboard.showMedia
             },
             {
+                component: perfectSenseComponent,
+                iconName: "sensors",
+                text: qsTr("PerfectSense"),
+                enabled: Config.dashboard.showPerfectSense
+            },
+            {
                 component: performanceComponent,
                 iconName: "speed",
                 text: qsTr("Performance"),
@@ -167,6 +173,12 @@ Item {
                 Media {
                     screenState: root.screenState
                 }
+            }
+
+            Component {
+                id: perfectSenseComponent
+
+                PerfectSense {}
             }
 
             Component {

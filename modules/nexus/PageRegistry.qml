@@ -15,13 +15,12 @@ QtObject {
         },
 
         // Connectivity
-        // TODO
-        // {
-        //     label: qsTr("Display"),
-        //     icon: "monitor",
-        //     description: qsTr("Output configuration"),
-        //     category: "connectivity"
-        // },
+        {
+            label: qsTr("Monitors"),
+            icon: "monitor",
+            description: qsTr("Resolution, refresh rate, arrangement"),
+            category: "connectivity"
+        },
         {
             label: qsTr("Network"),
             icon: "wifi",
@@ -43,6 +42,12 @@ QtObject {
         },
 
         // System
+        {
+            label: qsTr("PerfectSense"),
+            icon: "sensors",
+            description: qsTr("Predator fans, RGB, battery, display"),
+            category: "system"
+        },
         {
             label: qsTr("Updates"),
             icon: "update",

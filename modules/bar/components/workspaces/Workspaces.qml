@@ -14,8 +14,18 @@ StyledClippingRect {
     required property ShellScreen screen
     required property bool fullscreen
 
-    readonly property bool onSpecial: (GlobalConfig.bar.workspaces.perMonitorWorkspaces ? Hypr.monitorFor(screen) : Hypr.focusedMonitor)?.lastIpcObject.specialWorkspace?.name !== ""
-    readonly property int activeWsId: GlobalConfig.bar.workspaces.perMonitorWorkspaces ? (Hypr.monitorFor(screen).activeWorkspace?.id ?? 1) : Hypr.activeWsId
+    readonly property bool onSpecial: {
+        const mon = GlobalConfig.bar.workspaces.perMonitorWorkspaces ? Hypr.monitorFor(screen) : Hypr.focusedMonitor;
+        const name = mon?.lastIpcObject?.specialWorkspace?.name ?? "";
+        return name.length > 0;
+    }
+    readonly property int activeWsId: {
+        if (GlobalConfig.bar.workspaces.perMonitorWorkspaces) {
+            const mon = Hypr.monitorFor(screen);
+            return mon?.activeWorkspace?.id ?? Hypr.activeWsId ?? 1;
+        }
+        return Hypr.activeWsId ?? 1;
+    }
 
     readonly property var occupied: {
         const occ = {};
@@ -25,7 +35,7 @@ StyledClippingRect {
     }
     readonly property int groupOffset: Math.floor((activeWsId - 1) / Config.bar.workspaces.shown) * Config.bar.workspaces.shown
 
-    property real blur: onSpecial ? 1 : 0
+    property real blur: 0 // MultiEffect/blur quebra com QT_QUICK_BACKEND=software e EGL NVIDIA instável
 
     implicitWidth: Tokens.sizes.bar.innerWidth
     implicitHeight: layout.implicitHeight + Tokens.padding.small
@@ -39,12 +49,7 @@ StyledClippingRect {
         opacity: root.onSpecial ? 0.5 : 1
         visible: !root.fullscreen
 
-        layer.enabled: root.blur > 0
-        layer.effect: MultiEffect {
-            blurEnabled: true
-            blur: root.blur
-            blurMax: 32
-        }
+        // Sem layer.effect: MultiEffect exige RHI/OpenGL funcional
 
         Loader {
             asynchronous: true

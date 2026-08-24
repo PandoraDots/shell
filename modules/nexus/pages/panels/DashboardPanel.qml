@@ -57,6 +57,13 @@ PageBase {
         }
 
         ToggleRow {
+            text: qsTr("PerfectSense")
+            subtext: qsTr("Predator hardware controls (fans, RGB, battery)")
+            checked: Config.dashboard.showPerfectSense
+            onToggled: GlobalConfig.dashboard.showPerfectSense = checked
+        }
+
+        ToggleRow {
             text: qsTr("Performance")
             checked: Config.dashboard.showPerformance
             onToggled: GlobalConfig.dashboard.showPerformance = checked

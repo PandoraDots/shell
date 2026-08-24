@@ -33,13 +33,15 @@ Singleton {
 
     onEnabledChanged: {
         if (enabled) {
+            PerfectSense.gameEnter();
             setDynamicConfs();
             if (GlobalConfig.utilities.toasts.gameModeChanged)
-                Toaster.toast(qsTr("Game mode enabled"), qsTr("Animations off · display locked to 60Hz"), "gamepad");
+                Toaster.toast(qsTr("Game mode enabled"), qsTr("Turbo EC · animations off · 60Hz"), "gamepad");
         } else {
+            PerfectSense.gameLeave();
             Hypr.extras.message("reload");
             if (GlobalConfig.utilities.toasts.gameModeChanged)
-                Toaster.toast(qsTr("Game mode disabled"), qsTr("Hyprland settings restored"), "gamepad");
+                Toaster.toast(qsTr("Game mode disabled"), qsTr("Power mode restored"), "gamepad");
         }
     }
 
